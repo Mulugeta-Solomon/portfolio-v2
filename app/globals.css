@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design tokens — ported verbatim from portfolioV2_design.
+   :root = DARK (default) · [data-theme="light"] = LIGHT.
+   next-themes writes data-theme on <html>.
+   ============================================================ */
+:root {
+  --bg: #08090b;
+  --surface: rgba(255, 255, 255, 0.032);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.17);
+  --text: #f3f4f6;
+  --text-2: #9aa0ac;
+  --text-3: #8b909c;
+  --accent: #7c7cff;
+  --accent-2: #5bc5e8;
+  --chip-bg: rgba(255, 255, 255, 0.05);
+  --chip-border: rgba(255, 255, 255, 0.1);
+  --chip-text: #edeef0;
+  --code-bg: rgba(255, 255, 255, 0.03);
+  --code-border: rgba(255, 255, 255, 0.08);
+  --code-text: #9aa0ac;
+  --btn-bg: #edeef0;
+  --btn-text: #08090b;
+  --btn-hover: #ffffff;
+  --frame-bg: rgba(255, 255, 255, 0.03);
+  --frame-border: rgba(255, 255, 255, 0.09);
+  --frame-shadow: 0 18px 44px -18px rgba(0, 0, 0, 0.72);
+  --divider: rgba(255, 255, 255, 0.07);
+  --nav-bg: rgba(8, 9, 11, 0.72);
+  --aurora-1: rgba(124, 124, 255, 0.3);
+  --aurora-2: rgba(91, 197, 232, 0.2);
+  --grid-line: rgba(255, 255, 255, 0.028);
+  --dot: #4ade80;
+
+  /* Liquid Glass — DARK */
+  --glass-blur: 16px;
+  --glass-saturate: 180%;
+  --glass-bright: 1.1;
+  --glass-tint: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  --glass-rim: rgba(255, 255, 255, 0.5);
+  --glass-rim-dark: rgba(0, 0, 0, 0.32);
+  --glass-inner-hi: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-inner-lo: inset 0 -1px 0 rgba(0, 0, 0, 0.28);
+  --glass-drop: 0 18px 44px -22px rgba(0, 0, 0, 0.7);
+  --glass-drop-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.72);
+  --glass-noise: 0.045;
+}
+
+[data-theme="light"] {
+  --bg: #fcfcfb;
+  --surface: #ffffff;
+  --surface-2: #f5f5f2;
+  --border: #eaeae6;
+  --border-strong: #d5d5ce;
+  --text: #111111;
+  --text-2: #55554f;
+  --text-3: #67675f;
+  --accent: #3b5bdb;
+  --accent-2: #3b5bdb;
+  --chip-bg: #f4f4f0;
+  --chip-border: #e7e7e1;
+  --chip-text: #333333;
+  --code-bg: #fafaf8;
+  --code-border: #eaeae6;
+  --code-text: #55554f;
+  --btn-bg: #171717;
+  --btn-text: #ffffff;
+  --btn-hover: #000000;
+  --frame-bg: #f5f5f2;
+  --frame-border: #e4e4de;
+  --frame-shadow: 0 18px 44px -22px rgba(0, 0, 0, 0.22);
+  --divider: #eaeae6;
+  --nav-bg: rgba(252, 252, 251, 0.8);
+  --aurora-1: rgba(59, 91, 219, 0.12);
+  --aurora-2: rgba(91, 197, 232, 0.07);
+  --grid-line: rgba(0, 0, 0, 0.04);
+  --dot: #2ea043;
+
+  /* Liquid Glass — LIGHT */
+  --glass-saturate: 165%;
+  --glass-bright: 0.99;
+  --glass-tint: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.42));
+  --glass-rim: rgba(255, 255, 255, 0.9);
+  --glass-rim-dark: rgba(0, 0, 0, 0.08);
+  --glass-inner-hi: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --glass-inner-lo: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  --glass-drop: 0 18px 44px -22px rgba(0, 0, 0, 0.16);
+  --glass-drop-lg: 0 22px 50px -22px rgba(0, 0, 0, 0.2);
+  --glass-noise: 0.028;
+}
+
+/* ============================================================
+   Tailwind v4 bridge — tokens become utilities (bg-bg,
+   text-text-2, border-border-strong, …). @theme inline keeps
+   the var() reference so utilities flip with [data-theme].
+   ============================================================ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-chip-bg: var(--chip-bg);
+  --color-chip-border: var(--chip-border);
+  --color-chip-text: var(--chip-text);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
+  --color-code-text: var(--code-text);
+  --color-divider: var(--divider);
+  --color-dot: var(--dot);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Single nav breakpoint mirrors the design's 768/769px rule → `nav:` variant */
+  --breakpoint-nav: 769px;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* smooth theme cross-fade on toggle (design intent) */
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 32%, transparent);
+    color: var(--text);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+@keyframes auroraDrift {
+  0% {
+    transform: translate(-6%, -4%) scale(1);
+  }
+  50% {
+    transform: translate(6%, 5%) scale(1.16);
+  }
+  100% {
+    transform: translate(-6%, -4%) scale(1);
+  }
+}
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Liquid Glass — Baseline tier (universal, pure CSS).
+   Reusable surface: frosted blur + specular rim + grain.
+   ============================================================ */
+.glass {
+  position: relative;
+  border-radius: 18px;
+  background: var(--glass-tint);
+  border: 1px solid transparent;
+  box-shadow: var(--glass-inner-hi), var(--glass-inner-lo), var(--glass-drop);
+  isolation: isolate;
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) brightness(var(--glass-bright));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) brightness(var(--glass-bright));
+  }
+}
+/* specular rim: bright top-left → dark bottom-right, painted only on the 1px border */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    135deg,
+    var(--glass-rim) 0%,
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-dark) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+/* frost grain — kills blur banding, adds tactile texture */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--glass-noise);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* variants */
+.glass-nav {
+  border-radius: 0;
+  box-shadow: var(--glass-inner-hi), var(--glass-drop);
+}
+.glass-card {
+  border-radius: 18px;
+  box-shadow: var(--glass-inner-hi), var(--glass-inner-lo), var(--glass-drop-lg);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.glass-card:hover {
+  box-shadow: var(--glass-inner-hi), var(--glass-inner-lo), var(--glass-drop-lg), 0 0 0 1px var(--border-strong);
+}
+.glass-chip {
+  --glass-blur: 10px;
+  border-radius: 999px;
+  box-shadow: var(--glass-inner-hi);
+}
+.glass-button {
+  --glass-blur: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.18s ease, box-shadow 0.18s ease;
+}
+.glass-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+.glass-button:active {
+  transform: translateY(0) scale(0.985);
+  filter: brightness(0.98);
+}
+
+/* ============================================================
+   Accessibility fallbacks
+   ============================================================ */
+/* engines without backdrop-filter → opaque surface */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--surface-2);
+  }
+}
+/* user asked the OS to reduce transparency → drop the glass */
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: var(--surface-2) !important;
+  }
+  .glass::after {
+    display: none;
+  }
+}
+/* reduce motion → freeze ambient animation + theme cross-fade + smooth scroll */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    transition: none;
+  }
+  [data-aurora] {
+    animation: none !important;
+  }
+}
