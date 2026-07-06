@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio V2 — Mulugeta Solomon Abate
 
-## Getting Started
+Personal portfolio and engineering notes for **Mulugeta Solomon Abate** — a full-stack engineer in Tokyo focused on **backend & system design**. Dark-first with a light theme, built around an Apple-style **Liquid Glass** design language.
 
-First, run the development server:
+**Live:** https://mulugetaabate.com _(coming soon)_
+
+---
+
+## Stack
+
+- **Next.js 16** (App Router) — static export (`output: 'export'`)
+- **TypeScript** · **Tailwind CSS v4** (CSS-first `@theme` design tokens)
+- **motion** (formerly framer-motion) — scroll reveals & micro-interactions
+- **next-themes** — dark/light with a no-flash inline script
+- Self-hosted **Geist** / **Geist Mono** fonts
+- **Velite** — typed MDX for the Notes section
+- Deployed to **Cloudflare Pages**
+
+## Design language — Liquid Glass
+
+A hand-rolled `<Glass>` primitive (no library): layered `backdrop-filter` blur + saturation, a specular edge highlight, and subtle grain — with a pointer-reactive sheen on the hero. It respects `prefers-reduced-transparency` and `prefers-reduced-motion`, and every design token passes WCAG 2.2 AA contrast in both themes.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build    # static export → ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires **Node 20/22** and **pnpm**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/            routes (home, notes) · root layout · globals.css (tokens + glass)
+components/
+  ui/           Glass, Button, Chip/TechToken, GlassSheen, icons
+  layout/       Header, nav, theme toggle, mobile menu
+  home/         Hero, Work, About, Journey, Stack, Contact
+  motion/       Reveal, FadeIn (motion wrappers)
+content/notes/  MDX articles
+lib/            typed content (projects, journey, stack, notes) + site config
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2026 Mulugeta Solomon Abate

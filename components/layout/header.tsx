@@ -21,7 +21,7 @@ export function Header() {
           <ThemeToggle />
           <div className="hidden nav:block">
             <Button variant="outline" size="sm" href={siteConfig.resumePath} external arrow>
-              Résumé
+              Resume
             </Button>
           </div>
           <button

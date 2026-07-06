@@ -36,7 +36,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
             rel="noopener noreferrer"
             className="mt-[14px] rounded-[10px] bg-[var(--btn-bg)] px-[18px] py-[14px] text-center text-[15px] font-semibold text-[var(--btn-text)] transition-colors hover:bg-[var(--btn-hover)]"
           >
-            Résumé ↗
+            Resume ↗
           </a>
         </motion.div>
       )}
