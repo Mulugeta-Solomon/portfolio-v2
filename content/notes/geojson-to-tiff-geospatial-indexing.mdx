@@ -1,0 +1,59 @@
+---
+title: "GeoJSON to TIFF: automating geospatial indexing"
+category: "Data"
+date: "2024-12-10"
+readTime: "5 min read"
+order: 5
+tags: ["Python", "GDAL", "Rasterio"]
+summary: "Manual coordinate review was the bottleneck in our annotation pipeline. I built a converter that indexes GeoJSON annotations into georeferenced TIFFs, cutting review time and lifting annotation accuracy about 25%. A small pipeline with an outsized effect on iteration speed."
+---
+
+The most expensive part of the detection work was not training the model. It was getting clean, correctly-placed annotations to train it on — and the slowest step in *that* was a human cross-checking coordinates by hand. This is the story of a small script that removed a bottleneck nobody had framed as a software problem, and sped up the whole team as a result.
+
+## The bottleneck was a mismatch of spaces
+
+Annotations came in as **GeoJSON** — features in real-world coordinates, longitude and latitude on the Earth. The imagery the model actually sees is a **raster**: a grid of pixels. Those are two different coordinate spaces, and for a long time a person was bridging them by eye.
+
+That manual review was doing real work — catching annotations that landed in the wrong place, features nudged off their target, labels that didn't sit where they claimed to. But doing it by hand meant it was slow, it didn't scale with the dataset, and, being human and tedious, it was itself a source of error. The reviewer was the throttle on how fast the team could produce training data, which meant they were the throttle on how fast the model could improve.
+
+## The fix: put the annotations *into* the raster's world
+
+The insight is small and, in hindsight, obvious: stop asking a person to mentally line up two coordinate systems, and make the computer do the georeferencing exactly. A GeoJSON feature has a precise geographic location. A raster, if it carries the right metadata, has a precise mapping between geographic coordinates and pixels. Give the raster that metadata and the alignment is no longer a judgment call — it's arithmetic.
+
+So I wrote a converter that indexes the GeoJSON annotations into **georeferenced TIFFs**. Each annotation is burned into a raster that shares the imagery's coordinate reference system and geotransform, so the label sits, provably, on the pixels it describes.
+
+```python
+import rasterio
+from rasterio.features import rasterize
+
+with rasterio.open(source_image) as src:
+    # Inherit the imagery's CRS and geotransform so labels land on the right pixels.
+    profile = src.profile
+    shapes = [(feature["geometry"], 1) for feature in geojson["features"]]
+    mask = rasterize(
+        shapes,
+        out_shape=(src.height, src.width),
+        transform=src.transform,   # geographic → pixel mapping, exact
+        fill=0,
+        dtype="uint8",
+    )
+
+with rasterio.open(output_tiff, "w", **profile) as dst:
+    dst.write(mask, 1)
+```
+
+**Rasterio** (over **GDAL**) does the heavy lifting: it knows how to read the source image's spatial reference and reuse it, so the output TIFF is aligned with the imagery by construction rather than by inspection. Review stops being "check every coordinate" and becomes "glance at an overlay that is already correct."
+
+## Small pipeline, outsized effect
+
+The script is not clever. It is a few dozen lines around a well-worn geospatial library. But because it sat on the critical path, its effect was disproportionate:
+
+- **Review time dropped**, because the tedious coordinate cross-checking was gone — the alignment was guaranteed, not verified by hand.
+- **Annotation accuracy rose about 25%**, because exact georeferencing removed the small human placement errors that manual review both introduced and missed.
+- **Iteration got faster** across the board — faster, cleaner annotations meant faster retraining cycles, which meant the model improved on a shorter loop.
+
+## The lesson: automate the step everyone routes around
+
+Nobody had filed a ticket that said "coordinate review is a bottleneck." It was just *the way the work was done* — a slow manual step everyone had quietly accepted and planned around. Those are the highest-leverage things to automate precisely because they're invisible: they don't look like software problems until someone treats them as one.
+
+The rule I took from it: when a person is repeatedly, carefully lining up two representations of the same thing, that is almost always a job for a computer, and reframing it as a data-transformation problem tends to be worth far more than the size of the script suggests. A few dozen lines of Rasterio unblocked the whole training loop — the cheapest 25% we ever bought.

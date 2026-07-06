@@ -1,0 +1,77 @@
+---
+title: "Physics-based flood simulation, from DEM to depth map"
+category: "Geospatial"
+date: "2025-06-12"
+readTime: "10 min read"
+order: 2
+tags: ["Python", "Landlab", "Celery", "MapLibre GL"]
+summary: "Flood-Sight turns a rainfall total and a terrain model into a flood-depth map. Inside the engine: SCS Curve Number for runoff, Landlab's OverlandFlow solver for shallow-water flow, and how I wrapped a slow scientific simulation in a Celery + FastAPI backend with a MapLibre GL frontend that stays responsive while jobs run."
+---
+
+Flood-Sight answers one question: *if this much rain falls on this piece of ground, where does the water go and how deep does it get?* You give it a rainfall total and a terrain model; it gives you back a flood-depth map. Underneath that simple contract is a physical simulation that does not care about your web request's patience — so most of the engineering was about making rigorous science feel like a responsive product.
+
+## From rainfall to runoff
+
+Not all rain becomes flood. Some soaks in, some is caught by vegetation and depressions, and the rest runs off. Getting that split roughly right is what separates a plausible map from a scary-looking one.
+
+The engine uses the **SCS Curve Number** method for it — an empirical model that maps land cover and soil type to a single "curve number" describing how readily a surface sheds water. Pavement and saturated clay run off fast; forest and sandy loam absorb more. Given a rainfall depth and a curve number, you get the *excess* rainfall: the water that is actually free to flow.
+
+Curve Number is not the most sophisticated hydrology in the world, and that is exactly why it is the right first stage. It is well understood, it needs only inputs you can actually get for a region in the developing world, and it fails gracefully. The goal was a tool people could run for a real catchment tomorrow, not a research instrument that needs data nobody has.
+
+## Moving the water across the terrain
+
+Excess rainfall gives you *how much* water. The terrain decides *where it goes*. That is the job of the **digital elevation model (DEM)** — a raster grid where each cell holds a ground elevation — and a solver that pushes water downhill across it.
+
+Flood-Sight uses **[Landlab](https://landlab.readthedocs.io/)**, a Python framework for building earth-surface models on exactly that kind of grid. Its `OverlandFlow` component implements a **shallow-water** approximation: it solves for water depth and momentum cell to cell, with **Manning's roughness** setting how much the surface drags on the flow. Rougher ground slows and spreads the water; smooth channels concentrate it.
+
+```python
+from landlab.components import OverlandFlow
+
+of = OverlandFlow(grid, mannings_n=0.03, steep_slopes=True)
+
+elapsed = 0.0
+while elapsed < run_duration:
+    of.overland_flow(dt=of.calc_time_step())
+    elapsed += of.dt
+    # water__depth now lives on the grid; snapshot it periodically
+```
+
+The solver marches forward in small, physics-constrained time steps until the flood has played out. The output is a grid of water depths — the depth map — which then gets rendered to GeoTIFF for analysis and PNG for the web.
+
+Two things about this are worth saying plainly. First, it is **real physics**, not an interpolation of past floods, which is what lets it model rainfall a place has never recorded. Second, it is **slow** — the more you care about getting the flow right, the more time steps you take, and there is no clever way to make a shallow-water solve instant. That fact drove the entire backend design.
+
+## The problem: correct is slow, and the web is impatient
+
+A single simulation is comfortably a minutes-long job. The web expects an answer in milliseconds. You cannot close that gap by optimizing the solver; you close it by refusing to make the user wait for it synchronously.
+
+So the flow is **fire, forget, and follow along**:
+
+1. The user submits a run through the **Next.js** frontend — an area, a rainfall total, some parameters.
+2. **FastAPI** validates it, creates a job row in **Postgres**, and hands the actual work to a background **Celery** worker through **Redis**. The HTTP request returns immediately with a job ID.
+3. The worker runs the Landlab simulation, writing GeoTIFF and PNG outputs to **S3** when it finishes.
+4. Progress streams back to the browser over a **WebSocket**, so the user watches the run advance instead of staring at a spinner that might mean anything.
+
+The control plane stays responsive because it never does the heavy work. The heavy work reports for itself.
+
+## Progress you can actually see
+
+A three-minute job with no feedback is indistinguishable from a broken one. The WebSocket channel is what turns "is this thing frozen?" into "it's 60% through the flow solve."
+
+The Celery task emits progress as it crosses milestones — data loaded, runoff computed, simulation stepping, rasters written — and FastAPI relays those onto the socket for that job. The frontend just renders whatever the latest message says. It is a small amount of plumbing for an outsized improvement in how the tool *feels*: the difference between a scientific script and something a disaster-preparedness officer will actually trust and reach for.
+
+## Keeping the map responsive
+
+The result can be a large raster covering a whole catchment. Drop that on a map naively and you jank the main thread every time someone pans.
+
+The frontend renders on **MapLibre GL**, which pushes tiles and layers onto the GPU, so panning and zooming across a flooded region stays smooth. The depth map goes on as its own layer with a graduated color ramp — shallow to deep — over the base map, so the flood reads instantly against the streets and rivers underneath it. The map stays interactive while a *new* simulation runs in the background, because, again, the run is a job somewhere else, not a thing blocking the UI.
+
+## What tied it together
+
+Flood-Sight is really two systems pretending to be one: a **scientific simulator** that values correctness over speed, and a **web product** that values responsiveness over everything. The architecture's whole job is to let each keep its own priorities.
+
+- The **queue and worker** (Celery + Redis) let the slow thing be slow without the fast thing feeling it.
+- The **WebSocket** turns latency the user cannot avoid into progress the user can watch.
+- **Postgres** holds every job's state, so a run is durable and inspectable, not a fire-and-hope.
+- **GPU-accelerated map rendering** keeps the front end fluid over data that is genuinely heavy.
+
+The lesson I carried out of it: when the core computation is honestly slow and you cannot cheat physics, stop trying to make it fast and start making the *waiting* transparent. A correct answer you can watch arrive beats a fast answer you cannot trust — especially when the answer is where a flood will reach.

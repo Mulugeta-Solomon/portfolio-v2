@@ -1,0 +1,78 @@
+---
+title: "Shipping M-Pesa payments in a React/Node SaaS"
+category: "Product"
+date: "2025-02-18"
+readTime: "7 min read"
+order: 4
+tags: ["React", "TypeScript", "Prisma", "Socket.io"]
+summary: "Building Karamu for the East African market meant meeting customers where they are: M-Pesa for payments, SMS and WhatsApp for confirmations, and a real-time floor view over Socket.io. Notes on the Prisma schema, handling mobile-money callbacks idempotently, and designing for intermittent connectivity."
+---
+
+Karamu is a restaurant reservation and management platform built for the East African market, and building *for* that market — not porting a Western product onto it — changed almost every technical decision. The biggest one: payments do not go through a card. They go through **M-Pesa**, and mobile money behaves nothing like a card processor. Getting that right, and building around the connectivity realities it assumes, was most of the work.
+
+## Meet customers where they are
+
+The defaults a lot of SaaS reaches for — Stripe, email receipts, an always-on connection — quietly assume a context that isn't the one Karamu ships into. So the stack is chosen from the customer backward:
+
+- **M-Pesa** for payment, because that is what people actually pay with.
+- **SMS and WhatsApp** for confirmations, because that is where people actually read them — not an email inbox.
+- **A real-time floor view over Socket.io**, because a busy restaurant's state changes by the second and every device on the floor has to agree on it.
+
+Each of those is a small act of respect for how the customer already operates. Together they are the product.
+
+## Mobile-money callbacks are asynchronous, and that's the whole challenge
+
+A card charge is roughly synchronous: you call the processor, you get an answer. M-Pesa is not. You **initiate** a payment (an STK push that pops a PIN prompt on the customer's phone), your API call returns almost immediately with "request accepted," and then — seconds or minutes later, out of band — M-Pesa calls *you back* with what actually happened. The customer might pay, might cancel, might let it time out, might have no signal at that moment.
+
+That inversion means the payment's truth arrives on a **callback endpoint**, not in the response to your request. And callbacks over the public internet are delivered with all the usual hazards: they can arrive late, arrive twice, or arrive while a retry of the same one is already in flight.
+
+So the callback handler has exactly one hard requirement: **process each payment result once, no matter how many times the result is delivered.**
+
+```ts
+// The provider may POST the same result more than once. Make the write idempotent:
+// the unique M-Pesa receipt is the guard, and the status only moves forward.
+export async function handleCallback(payload: MpesaCallback) {
+  const { checkoutRequestId, receipt, resultCode } = parse(payload);
+
+  await prisma.$transaction(async (tx) => {
+    const payment = await tx.payment.findUnique({ where: { checkoutRequestId } });
+    if (!payment || payment.status !== "PENDING") return; // already settled — ignore
+
+    await tx.payment.update({
+      where: { checkoutRequestId },
+      data: {
+        status: resultCode === 0 ? "PAID" : "FAILED",
+        mpesaReceipt: receipt ?? null,
+      },
+    });
+  });
+}
+```
+
+Two guards do the heavy lifting: a **unique constraint** on the M-Pesa receipt so the same successful payment can never be recorded twice, and a **state machine that only advances** — a `PENDING` payment can become `PAID` or `FAILED`, but a settled one is immovable. A duplicate callback finds nothing left to change and quietly returns. As with any at-least-once system, the rule is the same: deliver the result as often as you like; it takes effect once.
+
+## The schema has to hold the in-between
+
+Because payment resolves asynchronously, the data model has to represent every state a reservation-with-a-pending-payment can be in — not just "paid" and "unpaid." The **Prisma** schema makes those states first-class:
+
+- A `Payment` carries an explicit `status` (`PENDING → PAID | FAILED`), the M-Pesa `checkoutRequestId` it was initiated with, and the `receipt` it settles to.
+- A reservation can exist while its payment is still pending, so a slow-paying customer isn't dropped — but it also isn't treated as confirmed until the callback says so.
+- Every transition is written inside a transaction, so the floor never sees a half-updated booking.
+
+Modeling the pending state honestly is what keeps the rest of the system from having to guess. There is always a row that says exactly where a payment is.
+
+## Real time, but resilient
+
+The floor view — who's seated, which tables are held, what's paid — runs over **Socket.io** so every staff device stays in sync as things change. When a payment settles, the same event that flips the database also pushes to the floor, and the held table turns confirmed in front of the host without a refresh.
+
+But "real time" cannot mean "requires a perfect connection," because the connection is not perfect. Signal drops. So the client is built to **survive the gap**: Socket.io reconnects on its own, and on reconnect the client re-syncs floor state from the server rather than trusting whatever it held while it was dark. The server is the authority; the socket is an accelerator, not the source of truth. Miss some live events and you converge back to correct the moment you're back online — you don't wake up to a lie.
+
+## What building for this market taught me
+
+The temptation with payments is to reach for the integration you already know and treat anything else as a lesser variant. Mobile money is not a lesser variant of cards — it is a different shape, asynchronous to its core, and the systems around it have to be built for that shape from the schema up.
+
+- Treat the **callback as the source of truth**, and make it idempotent, because it *will* be delivered more than once.
+- Model the **pending state explicitly**; don't paper over the async gap with optimism.
+- Assume the **network will fail** and design the real-time layer to reconcile, not to depend.
+
+Do that, and payments over M-Pesa on a spotty connection stop being a liability and become just another reliable part of the floor. The lesson generalizes past this one integration: build for the customer's actual conditions, not the ones your defaults assume.

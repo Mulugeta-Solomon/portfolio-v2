@@ -2,6 +2,9 @@
   "name": "portfolio-v2",
   "version": "0.1.0",
   "private": true,
+  "imports": {
+    "#site/content": "./.velite/index.js"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -26,7 +29,8 @@
     "eslint-config-next": "16.2.10",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "velite": "^0.4.0"
   },
   "packageManager": "pnpm@11.9.0"
 }
