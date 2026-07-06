@@ -20,7 +20,7 @@ export function Header() {
           <DesktopNav />
           <ThemeToggle />
           <div className="hidden nav:block">
-            <Button variant="outline" size="sm" href={siteConfig.resumePath} external>
+            <Button variant="outline" size="sm" href={siteConfig.resumePath} external arrow>
               Résumé
             </Button>
           </div>

@@ -25,6 +25,8 @@ export interface ProjectImage {
   kind: "screenshot" | "diagram";
   width: number;
   height: number;
+  /** shown under click-to-enlarge diagrams */
+  caption?: string;
 }
 
 export interface Project {

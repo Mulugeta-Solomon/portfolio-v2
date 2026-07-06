@@ -8,7 +8,10 @@ interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   href?: string;
+  /** opens in a new tab with rel="noopener noreferrer" */
   external?: boolean;
+  /** appends a ↗ glyph */
+  arrow?: boolean;
   icon?: ReactNode;
   className?: string;
   children: ReactNode;
@@ -35,6 +38,7 @@ export function Button({
   size = "md",
   href,
   external,
+  arrow,
   icon,
   className,
   children,
@@ -47,7 +51,7 @@ export function Button({
     <>
       {icon}
       <span>{children}</span>
-      {external ? <span aria-hidden="true">↗</span> : null}
+      {arrow ? <span aria-hidden="true">↗</span> : null}
     </>
   );
 
