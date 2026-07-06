@@ -119,8 +119,10 @@
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+}
 
-  /* Single nav breakpoint mirrors the design's 768/769px rule → `nav:` variant */
+/* Single nav breakpoint mirrors the design's 768/769px rule → `nav:` variant */
+@theme {
   --breakpoint-nav: 769px;
 }
 

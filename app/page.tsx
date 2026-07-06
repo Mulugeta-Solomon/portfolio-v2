@@ -1,10 +1,7 @@
-import { ThemeToggle } from "@/components/theme-toggle";
-
 /**
- * PHASE 1 GATE PAGE — temporary.
- * Proves: design tokens flip on [data-theme], Liquid Glass renders,
- * theme persists across reload (next-themes + localStorage).
- * Replaced by the real Header (Phase 2) + Hero (Phase 3).
+ * TEMPORARY foundation showcase (Phases 1–2).
+ * Header/nav/theme now live globally via the layout. This page is replaced by
+ * the real Hero (Phase 3) and the rest of the home sections (Phases 3–4).
  */
 const swatches: { name: string; token: string }[] = [
   { name: "bg", token: "--bg" },
@@ -17,12 +14,12 @@ const swatches: { name: string; token: string }[] = [
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main id="main" className="relative min-h-screen overflow-hidden">
       {/* ambient aurora + grid (previews the hero material) */}
       <div
         data-aurora
         aria-hidden
-        className="pointer-events-none absolute inset-x-[-10%] top-[-30%] h-[640px] blur-[46px]"
+        className="pointer-events-none absolute inset-x-[-10%] top-[-34%] h-[640px] blur-[46px]"
         style={{
           background:
             "radial-gradient(48% 60% at 28% 32%, var(--aurora-1), transparent 68%), radial-gradient(46% 56% at 74% 42%, var(--aurora-2), transparent 70%)",
@@ -41,29 +38,17 @@ export default function Home() {
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-[900px] px-6 py-16">
-        <header className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="glass glass-chip inline-flex size-[30px] flex-none items-center justify-center font-mono text-[11px] font-semibold tracking-[0.06em] text-accent">
-              MA
-            </span>
-            <span className="text-[15px] font-semibold tracking-[-0.01em]">Portfolio V2</span>
-          </div>
-          <ThemeToggle />
-        </header>
-
-        <div className="mt-14">
-          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-            Phase 1 · Foundation
-          </div>
-          <h1 className="mt-3 max-w-[18ch] text-[clamp(30px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.035em]">
-            Tokens, theme &amp; Liquid Glass are live.
-          </h1>
-          <p className="mt-5 max-w-[60ch] text-[16px] leading-[1.6] text-text-2">
-            Toggle the theme (top-right) — every token cross-fades, and the choice persists across
-            reload. The cards below run the real Baseline-tier glass primitive.
-          </p>
+      <div className="relative z-10 mx-auto max-w-[1000px] px-6 py-16">
+        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+          Phase 2 · Header &amp; chrome
         </div>
+        <h1 className="mt-3 max-w-[18ch] text-[clamp(30px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.035em]">
+          The header is live.
+        </h1>
+        <p className="mt-5 max-w-[60ch] text-[16px] leading-[1.6] text-text-2">
+          Frosted sticky nav, desktop links, the theme toggle, the résumé button, and a fully
+          keyboard-accessible mobile menu (resize below&nbsp;769px). Foundation below.
+        </p>
 
         {/* Glass cards */}
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -100,16 +85,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Text scale */}
-        <div className="glass glass-card mt-10 p-6">
-          <p className="text-[18px] font-medium text-text">Primary text — --text</p>
-          <p className="mt-1 text-[15px] text-text-2">Secondary text — --text-2</p>
-          <p className="mt-1 text-[13px] text-text-3">Tertiary / mono labels — --text-3</p>
-          <p className="mt-1 text-[15px] text-accent">Accent link color — --accent</p>
-        </div>
-
         <p className="mt-12 font-mono text-[11.5px] tracking-[0.03em] text-text-3">
-          portfolio-v2 · phase 1 gate · replace with Header (P2) + Hero (P3)
+          portfolio-v2 · phase 2 gate · Hero replaces this in phase 3
         </p>
       </div>
     </main>

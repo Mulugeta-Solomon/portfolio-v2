@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Header } from "@/components/layout/header";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -31,7 +32,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body className="min-h-screen bg-bg text-text antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:border focus:border-border-strong focus:bg-surface focus:px-4 focus:py-2 focus:text-[13px] focus:font-medium focus:text-text"
+          >
+            Skip to content
+          </a>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );
