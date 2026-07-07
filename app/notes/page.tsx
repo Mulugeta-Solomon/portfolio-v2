@@ -11,7 +11,7 @@ const notesDescription =
 
 // Shared social card (metadataBase resolves the relative URL to absolute).
 const ogImage = "/opengraph-image.png";
-const ogImageAlt = `${siteConfig.name} — ${siteConfig.role}`;
+const ogImageAlt = `${siteConfig.shortName} — ${siteConfig.role}`;
 
 export const metadata: Metadata = {
   title: "Notes",
