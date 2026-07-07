@@ -16,6 +16,7 @@ export function DesktopNav() {
           <Link
             key={link.href}
             href={link.href}
+            prefetch={false}
             aria-current={active ? "page" : undefined}
             className={clsx(
               "text-[13px] transition-colors",

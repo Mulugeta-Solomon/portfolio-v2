@@ -7,7 +7,8 @@ export function NoteCard({ note }: { note: Note }) {
   return (
     <Link
       href={note.url}
-      className="group block rounded-[15px] border border-border bg-surface p-[clamp(22px,3.2vw,32px)] transition-[border-color,box-shadow,background-color] duration-200 hover:border-border-strong hover:shadow-[var(--frame-shadow)] focus-visible:border-border-strong"
+      prefetch={false}
+      className="group block rounded-[15px] border border-border bg-surface p-[clamp(22px,3.2vw,32px)] transition-[border-color,box-shadow,background-color,transform] duration-200 hover:border-border-strong hover:shadow-[var(--frame-shadow)] focus-visible:border-border-strong motion-safe:hover:-translate-y-0.5"
     >
       <div className="flex flex-wrap items-center gap-[10px] font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-text-3">
         <span className="text-accent">{note.category}</span>

@@ -1,5 +1,6 @@
-import Image from "next/image";
 import { LayerGrid } from "./layer-grid";
+import { Picture } from "@/components/ui/picture";
+import { getImage } from "@/lib/images";
 import type { Project } from "@/lib/types";
 
 export function ArchitecturePanel({
@@ -27,17 +28,15 @@ export function ArchitecturePanel({
       {diagram ? (
         <>
           <a
-            href={diagram.src}
+            href={getImage(diagram.src)?.full ?? diagram.src}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${title} — open the full-size architecture diagram (opens in a new tab)`}
             className="mt-5 block rounded-[14px] border border-[color:var(--frame-border)] bg-[var(--frame-bg)] p-[clamp(10px,1.4vw,16px)] shadow-[var(--frame-shadow)] transition-[filter] duration-200 hover:brightness-[1.03]"
           >
-            <Image
+            <Picture
               src={diagram.src}
               alt={diagram.alt}
-              width={diagram.width}
-              height={diagram.height}
               sizes="(max-width: 768px) 92vw, 760px"
               className="block h-auto w-full"
             />

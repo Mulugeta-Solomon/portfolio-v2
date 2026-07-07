@@ -29,6 +29,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 onClick={onClose}
                 aria-current={active ? "page" : undefined}
                 className={clsx(
