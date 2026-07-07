@@ -1,0 +1,62 @@
+---
+title: "From YOLOv5 to YOLOv8: a 22% accuracy story"
+category: "Machine Learning"
+date: "2025-04-09"
+readTime: "6 min read"
+order: 3
+tags: ["PyTorch", "YOLO", "OpenCV"]
+summary: "The model swap was the easy part. What actually moved the needle was the evaluation harness — class-specific precision and recall, IoU, and mAP that exposed where the detector failed across terrains — and using it to drive targeted retraining. A short case study in measuring before optimizing."
+---
+
+The headline is "we upgraded from YOLOv5 to YOLOv8 and detection accuracy went up about 22%." The headline is also misleading, because the version bump is not what earned the 22%. Changing the model was an afternoon. Knowing *why* it was better, and where it still wasn't, took a proper evaluation harness — and that harness is the actual story.
+
+## The trap: a single number that hides everything
+
+The detector's job was to find mosquito breeding sites in drone imagery — standing water, containers, the small features that larval-source management teams need to reach. Early on, "how good is it?" was answered by one aggregate accuracy figure. That number felt informative and was nearly useless.
+
+Aggregate accuracy hides the two things you most need to know:
+
+- **Which classes** are failing. A model can post a healthy overall score while being blind to the one rare-but-critical class you actually care about.
+- **Where** it fails. Performance over open water is not performance over vegetated ground, and averaging them together erases the terrains where the model is quietly falling apart.
+
+A single metric tells you *that* the model is imperfect. It never tells you *what to fix*. So before touching the architecture, I built something that would.
+
+## The harness: measure per class, per terrain
+
+The evaluation framework scored detections the way object detection is actually supposed to be judged:
+
+- **IoU (Intersection over Union)** — how well each predicted box overlaps the ground truth. This is the gate that decides whether a detection counts as a hit at all, and the threshold you pick quietly defines "correct."
+- **Precision and recall, per class** — of what the model flagged, how much was real (precision); of what was really there, how much it caught (recall). Kept *separate per class*, because the trade-offs differ and the averages lie.
+- **mAP (mean Average Precision)** — the standard summary across classes and thresholds, but read as the *last* number, after the per-class breakdown, never as a substitute for it.
+
+Crucially, I sliced these **across terrains**. That is what turned the eval from a scoreboard into a map of the model's weaknesses.
+
+```python
+# Precision/recall bucketed by terrain, not just globally — this is where the
+# "22%" actually came from: it told us which slices to go fix.
+for terrain, dets in group_by_terrain(detections):
+    tp, fp, fn = match_by_iou(dets, ground_truth[terrain], iou_thresh=0.5)
+    precision = tp / (tp + fp + 1e-9)
+    recall = tp / (tp + fn + 1e-9)
+    report[terrain] = {"precision": precision, "recall": recall, "n": tp + fn}
+```
+
+The moment those numbers existed, the vague "the model could be better" became specific and actionable: recall collapsed on certain vegetated and high-clutter terrains while holding up fine on open ground.
+
+## The fix followed the measurement
+
+With the failure modes named, retraining stopped being "throw more data at it and hope" and became targeted. The weak slices told me exactly which conditions were underrepresented and mislabeled in training. The work went there:
+
+- **Curate for the gaps.** Add and clean examples from the terrains where recall was worst, instead of growing the dataset uniformly.
+- **Re-check labels where the model and the annotations disagreed most** — often the model was right and the ground truth was noisy, which is its own kind of finding.
+- **Re-evaluate on the same per-terrain harness** after each round, so "did that help?" had a real answer and not a vibe.
+
+Moving to YOLOv8 gave a stronger backbone to retrain *onto*, and it brought genuine improvements. But the reason the gains stuck — and the reason we could prove they were gains rather than noise on a lucky test split — was that every change was made against a measurement that could see the parts a single accuracy number blurred together.
+
+## The lesson, stated plainly
+
+> You cannot optimize what you cannot see. A better model on top of a blind evaluation just fails more confidently.
+
+The 22% is real, but it is a *consequence*. The actual leverage was building the instrument first: precision and recall held per class, IoU deciding what counts, mAP as a summary and not a verdict, and every one of them sliced by the terrain where the model had to work. Measure with enough resolution to see where you are wrong, and the fixes stop being guesses.
+
+The model upgrade got the credit. The evaluation harness did the work.

@@ -1,0 +1,98 @@
+---
+title: "Architecting an async ML inference pipeline on AWS"
+category: "Infrastructure"
+date: "2025-08-14"
+readTime: "8 min read"
+order: 1
+tags: ["FastAPI", "SQS", "EC2", "S3", "PostgreSQL"]
+summary: "Detection jobs don't belong in a request/response cycle. Here's how the SORA pipeline works end to end — a presigned S3 upload, an SQS message to decouple submission from compute, GPU workers that long-poll for jobs, and a FastAPI control plane tracking state in Postgres — with notes on idempotency, backpressure, and keeping GPU cost sane."
+---
+
+Running a detection model over a drone survey is not a request you can answer in a request. A single flight can be hundreds of high-resolution frames; a GPU pass over them takes minutes, sometimes longer. Hang that off an HTTP handler and you have tied up a worker, a connection, and a load-balancer timeout to a job that has no business blocking any of them.
+
+So the first architectural decision on the SORA inference platform was the simplest and the most consequential: **the API never runs the model.** It accepts work, hands it to a queue, and reports on it. Everything expensive happens somewhere else, on its own schedule.
+
+## The shape of the system
+
+Four moving parts, each with one job:
+
+- **A FastAPI control plane** in a private subnet — the only thing clients talk to. It validates requests, writes job records, and reads them back. It is deliberately boring and deliberately cheap to run.
+- **S3** for the imagery. Clients upload straight to it with a presigned URL; the API never proxies a byte of image data.
+- **SQS** as the seam between "a job was requested" and "a job is being worked." One message per job.
+- **GPU workers on EC2** that long-poll the queue, pull a job, run the model, and write results back.
+
+The control plane and the compute plane share nothing but the queue and the database. Either can restart, scale, or fail without dragging the other down with it.
+
+## Uploads go straight to S3
+
+The naive version has the client POST an image to the API, which forwards it to storage. That makes the API a bottleneck for the one thing it should never touch — large binary payloads.
+
+Instead the client asks for a **presigned PUT URL**, uploads directly to S3, and then tells the API "here is the object key, please process it."
+
+```python
+@router.post("/jobs")
+async def create_job(req: CreateJobRequest, db: Session):
+    key = f"uploads/{req.survey_id}/{uuid4()}.tif"
+    url = s3.generate_presigned_url(
+        "put_object",
+        Params={"Bucket": BUCKET, "Key": key},
+        ExpiresIn=900,
+    )
+    job = Job(id=uuid4(), object_key=key, status="awaiting_upload")
+    db.add(job)
+    db.commit()
+    return {"job_id": job.id, "upload_url": url}
+```
+
+The API stays small and I/O-light. Storage does what storage is good at. And because the upload never crosses the control plane, a flaky connection on a survey uploading gigabytes over a field LTE link is the client's problem to retry, not a half-finished request rotting inside my service.
+
+## The queue is the decoupler
+
+Once the object is uploaded, submitting the job is just enqueuing a message. This is the point of the whole design: **submission and compute run at different rates, so they must not be the same call.** During a busy afternoon a hundred jobs might land in minutes; the four GPUs I can afford chew through them over the next hour. SQS absorbs that mismatch.
+
+Workers **long-poll** — one `ReceiveMessage` call that waits up to 20 seconds for work instead of hammering the queue empty. When a worker picks up a message, SQS makes it invisible to the others for a visibility timeout. Finish the job, delete the message. Crash mid-job, and the message reappears for someone else to retry. That reappearance is a feature, but it is also the reason the next section exists.
+
+## Idempotency, because at-least-once is a promise and a threat
+
+SQS guarantees a message is delivered *at least* once. In the real world that means: sometimes twice. A worker can process a job, write the results, and die before it deletes the message — and the job comes back. If "process this job" is not idempotent, you get duplicate detections, double-counted breeding sites, and a database that quietly disagrees with itself.
+
+Two things keep it honest:
+
+1. **A deterministic result key.** Output for a job is written to `results/{job_id}.json`, not a fresh UUID each run. Reprocessing overwrites the same object instead of creating a phantom second result.
+2. **A guarded status transition.** The worker only advances a job it still owns, and the update is conditional.
+
+```python
+# Only claim a job that is actually queued; a second delivery finds nothing to claim.
+updated = (
+    db.query(Job)
+    .filter(Job.id == job_id, Job.status == "queued")
+    .update({"status": "processing", "worker_id": worker_id})
+)
+db.commit()
+if not updated:
+    return  # already handled by another (or an earlier) delivery
+```
+
+The rule I hold to: a job can be *delivered* any number of times, but it can only *take effect* once. Design for that and duplicate delivery becomes a non-event instead of a 2 a.m. page.
+
+## Backpressure is a design choice, not an accident
+
+A queue in front of finite GPUs is a shock absorber, but it is not infinite, and pretending otherwise just moves the failure somewhere less visible. A few explicit limits keep the system predictable under load:
+
+- **The control plane rejects early.** If the backlog is already deep, `POST /jobs` can refuse with a clear "system busy, retry later" rather than accepting work it cannot honor for an hour.
+- **The visibility timeout matches the real p99 job time,** not the average. Too short and a slow job gets picked up twice while the first is still running; too long and a genuinely dead worker's job sits frozen.
+- **A dead-letter queue** catches messages that fail repeatedly, so one poison input can't loop forever and starve everything behind it.
+
+Backpressure done right means the system degrades in a way you chose in advance.
+
+## Keeping the GPU bill sane
+
+GPUs are the expensive part, so the whole architecture is bent toward keeping them busy only when there is work and idle-off when there isn't. Because compute is fully decoupled from the API, the worker fleet can scale on **queue depth** — spin up when the backlog grows, scale to zero when it drains — without the control plane knowing or caring. The API costs almost nothing to leave running; the GPUs, which cost real money, only run against a queue that actually has jobs in it.
+
+Postgres holds the ground truth for every job — its status, its timings, its result location — so "what is happening right now" is a query, not a guess. That record is also what lets the fleet come and go freely: no worker holds state worth keeping, so losing one loses nothing.
+
+## What I'd tell myself starting over
+
+The queue is not an implementation detail you bolt on for scale later. It is the **contract** between two systems that fundamentally run at different speeds, and deciding that up front is what made everything downstream — idempotency, backpressure, cost control — a set of small, local problems instead of one tangled one.
+
+Make the API cheap and dumb. Make the workers stateless and replaceable. Put the truth in the database and the buffer in the queue. Everything else is tuning.

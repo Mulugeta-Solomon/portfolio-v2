@@ -307,6 +307,141 @@
 }
 
 /* ============================================================
+   Notes prose — MDX article body. Element styling via tokens so
+   it flips with [data-theme]; readable measure + vertical rhythm.
+   ============================================================ */
+.prose-note {
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.prose-note > :first-child {
+  margin-top: 0;
+}
+.prose-note p,
+.prose-note ul,
+.prose-note ol {
+  margin-top: 1.15em;
+}
+.prose-note h2 {
+  margin-top: 2em;
+  color: var(--text);
+  font-size: clamp(21px, 2.6vw, 25px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.prose-note h3 {
+  margin-top: 1.7em;
+  color: var(--text);
+  font-size: clamp(17px, 2vw, 19px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+.prose-note strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.prose-note a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 42%, transparent);
+  transition: text-decoration-color 0.2s ease;
+}
+.prose-note a:hover {
+  text-decoration-color: var(--accent);
+}
+.prose-note ul,
+.prose-note ol {
+  padding-left: 1.35em;
+}
+.prose-note li {
+  margin-top: 0.5em;
+}
+.prose-note ul > li {
+  list-style: disc;
+}
+.prose-note ol > li {
+  list-style: decimal;
+  font-variant-numeric: tabular-nums;
+}
+.prose-note li::marker {
+  color: var(--text-3);
+}
+.prose-note li > ul,
+.prose-note li > ol {
+  margin-top: 0.5em;
+}
+/* inline code (not fenced blocks) */
+.prose-note :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--code-text);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: 0.12em 0.4em;
+  word-break: break-word;
+}
+.prose-note pre {
+  margin-top: 1.5em;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  padding: 16px 18px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-note pre code {
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+/* rehype-pretty-code (Shiki): figure wrapper + per-token dual-theme colors.
+   Each token carries --shiki-dark/--shiki-light; pick the active one. */
+.prose-note figure[data-rehype-pretty-code-figure] {
+  margin: 1.5em 0 0;
+}
+.prose-note figure[data-rehype-pretty-code-figure] pre {
+  margin-top: 0;
+}
+.prose-note pre code[data-language] {
+  display: grid; /* one grid row per line */
+}
+.prose-note pre code span {
+  color: var(--shiki-dark);
+}
+[data-theme="light"] .prose-note pre code span {
+  color: var(--shiki-light);
+}
+.prose-note blockquote {
+  margin-top: 1.5em;
+  padding: 2px 0 2px 20px;
+  border-left: 2px solid var(--accent);
+  color: var(--text);
+  font-size: 1.05em;
+}
+.prose-note blockquote p {
+  margin-top: 0.6em;
+}
+.prose-note blockquote > :first-child {
+  margin-top: 0;
+}
+.prose-note hr {
+  margin: 2.2em 0 0;
+  border: 0;
+  border-top: 1px solid var(--divider);
+}
+
+/* ============================================================
    Accessibility fallbacks
    ============================================================ */
 /* engines without backdrop-filter → opaque surface */
