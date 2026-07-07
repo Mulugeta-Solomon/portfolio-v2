@@ -405,6 +405,23 @@
   padding: 0;
   font-size: inherit;
 }
+/* rehype-pretty-code (Shiki): figure wrapper + per-token dual-theme colors.
+   Each token carries --shiki-dark/--shiki-light; pick the active one. */
+.prose-note figure[data-rehype-pretty-code-figure] {
+  margin: 1.5em 0 0;
+}
+.prose-note figure[data-rehype-pretty-code-figure] pre {
+  margin-top: 0;
+}
+.prose-note pre code[data-language] {
+  display: grid; /* one grid row per line */
+}
+.prose-note pre code span {
+  color: var(--shiki-dark);
+}
+[data-theme="light"] .prose-note pre code span {
+  color: var(--shiki-light);
+}
 .prose-note blockquote {
   margin-top: 1.5em;
   padding: 2px 0 2px 20px;

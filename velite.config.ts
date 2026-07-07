@@ -1,4 +1,16 @@
 import { defineConfig, defineCollection, s } from "velite";
+import rehypePrettyCode from "rehype-pretty-code";
+
+/**
+ * Build-time syntax highlighting (Shiki). Dark + light themes are both emitted
+ * as CSS variables per token; `.prose-note` CSS picks the one matching the
+ * active [data-theme]. `keepBackground:false` keeps our own --code-bg surface.
+ */
+const prettyCodeOptions = {
+  theme: { dark: "github-dark", light: "github-light" },
+  keepBackground: false,
+  defaultLang: "plaintext",
+};
 
 /**
  * Notes — typed MDX content layer.
@@ -8,7 +20,7 @@ import { defineConfig, defineCollection, s } from "velite";
  */
 const notes = defineCollection({
   name: "Note",
-  pattern: "notes/**/*.mdx",
+  pattern: "notes/**/*.{md,mdx}",
   schema: s
     .object({
       title: s.string().max(120),
@@ -40,4 +52,7 @@ export default defineConfig({
     clean: true,
   },
   collections: { notes },
+  mdx: {
+    rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+  },
 });
