@@ -16,6 +16,16 @@
 /assets/opt/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Root-level convention files (favicon, apple-touch-icon, OG card) live at stable,
+# un-hashed URLs — not immutable, but content-stable, so cache a day and revalidate
+# in the background rather than falling through to the no-cache default.
+/icon.svg
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/apple-icon.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/opengraph-image.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
 # Resume PDF is mutable at a stable URL — revalidate quickly so an update is seen.
 /assets/Mulugeta-Solomon-Abate-Resume.pdf
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
