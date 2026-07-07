@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Page not found",
+  // Explicit noindex overrides the layout's positive default (a plain removal would
+  // inherit `index, follow` and conflict with Next's auto not-found noindex). Drop the
+  // inherited home canonical — a 404 must not declare itself to be the homepage.
   robots: { index: false, follow: false },
+  alternates: { canonical: null },
 };
 
 export default function NotFound() {
@@ -26,7 +30,7 @@ export default function NotFound() {
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-[11px]">
           <Button href="/">Back home</Button>
-          <Button href="/notes" variant="outline">
+          <Button href="/notes/" variant="outline">
             Read the notes
           </Button>
         </div>
