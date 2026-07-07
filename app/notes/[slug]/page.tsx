@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
           url: "/opengraph-image.png",
           width: 1200,
           height: 630,
-          alt: `${siteConfig.name} — ${siteConfig.role}`,
+          alt: `${siteConfig.shortName} — ${siteConfig.role}`,
         },
       ],
     },

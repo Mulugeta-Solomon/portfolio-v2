@@ -3,7 +3,7 @@ import { SectionHeading } from "./section-heading";
 
 const paragraphs = [
   "I started in robotics — an M.Sc. at Ritsumeikan, a teaching assistantship, and a published paper on semantic line detection. Control theory, math, and sensor systems are where my instinct for infrastructure comes from.",
-  "Today I work across the whole stack — the interface people touch, the APIs and data models behind it, the ML that powers the hard parts, and the cloud infrastructure holding it up. I've written a lot of production SQL, shipped real‑time features, and owned services from schema to deploy. Startup pace since day one taught me to go deep fast in whatever a problem needs — not a little of everything, but the whole system, built to hold.",
+  "Today I work across the whole stack: the interface people touch, the APIs and data models behind it, the ML that powers the hard parts, and the cloud that holds it up. I’ve written production SQL against real datasets, shipped real‑time features, and owned services end to end — from schema design to deploy. Startup pace taught me to go deep fast: not a little of everything, but whole systems, built to hold.",
   "I grew up in Ethiopia and build with the East African market in mind — software for the places default tools forget. I care about systems that hold up when the stakes are real: a flood, an outbreak, a restaurant's Friday night.",
 ];
 
