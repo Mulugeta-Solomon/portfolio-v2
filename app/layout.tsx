@@ -6,15 +6,66 @@ import { Providers } from "./providers";
 import { Header } from "@/components/layout/header";
 import { siteConfig } from "@/lib/site-config";
 
+const siteTitle = `${siteConfig.name} — ${siteConfig.role}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.role}`,
+    default: siteTitle,
     template: `%s — ${siteConfig.shortName}`,
   },
   description: siteConfig.description,
-  authors: [{ name: siteConfig.name }],
-  // Full OpenGraph/Twitter/JSON-LD/sitemap wired in Phase 6.
+  applicationName: siteConfig.shortName,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  keywords: [
+    "Mulugeta Solomon Abate",
+    "full-stack engineer",
+    "backend engineer",
+    "system design",
+    "ML infrastructure",
+    "FastAPI",
+    "NestJS",
+    "Next.js",
+    "software engineer Tokyo",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    siteName: siteConfig.shortName,
+    title: siteTitle,
+    description: siteConfig.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteConfig.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.name,
+  alternateName: siteConfig.shortName,
+  url: siteConfig.url,
+  jobTitle: siteConfig.role,
+  email: `mailto:${siteConfig.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Tokyo",
+    addressCountry: "JP",
+  },
+  worksFor: { "@type": "Organization", name: "Sora Technology" },
+  sameAs: [siteConfig.github, siteConfig.linkedin],
 };
 
 export const viewport: Viewport = {
@@ -32,6 +83,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${GeistSans.variable} ${GeistMono.variable}`}
     >
       <body className="min-h-screen bg-bg text-text antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <Providers>
           <a
             href="#main"

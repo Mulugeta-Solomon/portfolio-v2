@@ -23,8 +23,6 @@ export interface ProjectImage {
   src: string;
   alt: string;
   kind: "screenshot" | "diagram";
-  width: number;
-  height: number;
   /** shown under click-to-enlarge diagrams */
   caption?: string;
 }
@@ -46,7 +44,7 @@ export interface Project {
     note: string;
     heading: string;
     paragraph: string;
-    diagram?: { src: string; alt: string; caption: string; width: number; height: number };
+    diagram?: { src: string; alt: string; caption: string };
     layers?: LayerRow[];
   };
 }

@@ -1,0 +1,50 @@
+{
+  "/assets/portrait.jpg": {
+    "width": 1200,
+    "height": 1500,
+    "avif": "/assets/opt/portrait-400.9e5a304e.avif 400w, /assets/opt/portrait-600.9e5a304e.avif 600w, /assets/opt/portrait-800.9e5a304e.avif 800w, /assets/opt/portrait-1200.9e5a304e.avif 1200w",
+    "webp": "/assets/opt/portrait-400.9e5a304e.webp 400w, /assets/opt/portrait-600.9e5a304e.webp 600w, /assets/opt/portrait-800.9e5a304e.webp 800w, /assets/opt/portrait-1200.9e5a304e.webp 1200w",
+    "fallback": "/assets/opt/portrait-800.9e5a304e.webp",
+    "full": "/assets/opt/portrait-1200.9e5a304e.webp"
+  },
+  "/assets/floodsight-map-crop.png": {
+    "width": 1562,
+    "height": 842,
+    "avif": "/assets/opt/floodsight-map-crop-520.03c9e686.avif 520w, /assets/opt/floodsight-map-crop-780.03c9e686.avif 780w, /assets/opt/floodsight-map-crop-1040.03c9e686.avif 1040w, /assets/opt/floodsight-map-crop-1562.03c9e686.avif 1562w",
+    "webp": "/assets/opt/floodsight-map-crop-520.03c9e686.webp 520w, /assets/opt/floodsight-map-crop-780.03c9e686.webp 780w, /assets/opt/floodsight-map-crop-1040.03c9e686.webp 1040w, /assets/opt/floodsight-map-crop-1562.03c9e686.webp 1562w",
+    "fallback": "/assets/opt/floodsight-map-crop-1040.03c9e686.webp",
+    "full": "/assets/opt/floodsight-map-crop-1562.03c9e686.webp"
+  },
+  "/assets/karamu-dash.png": {
+    "width": 1712,
+    "height": 1089,
+    "avif": "/assets/opt/karamu-dash-520.28869728.avif 520w, /assets/opt/karamu-dash-780.28869728.avif 780w, /assets/opt/karamu-dash-1040.28869728.avif 1040w, /assets/opt/karamu-dash-1712.28869728.avif 1712w",
+    "webp": "/assets/opt/karamu-dash-520.28869728.webp 520w, /assets/opt/karamu-dash-780.28869728.webp 780w, /assets/opt/karamu-dash-1040.28869728.webp 1040w, /assets/opt/karamu-dash-1712.28869728.webp 1712w",
+    "fallback": "/assets/opt/karamu-dash-1040.28869728.webp",
+    "full": "/assets/opt/karamu-dash-1712.28869728.webp"
+  },
+  "/assets/floodsight-architecture.png": {
+    "width": 1915,
+    "height": 1427,
+    "avif": "/assets/opt/floodsight-architecture-760.46eecf66.avif 760w, /assets/opt/floodsight-architecture-1140.46eecf66.avif 1140w, /assets/opt/floodsight-architecture-1520.46eecf66.avif 1520w, /assets/opt/floodsight-architecture-1915.46eecf66.avif 1915w",
+    "webp": "/assets/opt/floodsight-architecture-760.46eecf66.webp 760w, /assets/opt/floodsight-architecture-1140.46eecf66.webp 1140w, /assets/opt/floodsight-architecture-1520.46eecf66.webp 1520w, /assets/opt/floodsight-architecture-1915.46eecf66.webp 1915w",
+    "fallback": "/assets/opt/floodsight-architecture-1520.46eecf66.webp",
+    "full": "/assets/opt/floodsight-architecture-1915.46eecf66.webp"
+  },
+  "/assets/lsm-sequence.png": {
+    "width": 1772,
+    "height": 1190,
+    "avif": "/assets/opt/lsm-sequence-760.dd64e36b.avif 760w, /assets/opt/lsm-sequence-1140.dd64e36b.avif 1140w, /assets/opt/lsm-sequence-1520.dd64e36b.avif 1520w, /assets/opt/lsm-sequence-1772.dd64e36b.avif 1772w",
+    "webp": "/assets/opt/lsm-sequence-760.dd64e36b.webp 760w, /assets/opt/lsm-sequence-1140.dd64e36b.webp 1140w, /assets/opt/lsm-sequence-1520.dd64e36b.webp 1520w, /assets/opt/lsm-sequence-1772.dd64e36b.webp 1772w",
+    "fallback": "/assets/opt/lsm-sequence-1520.dd64e36b.webp",
+    "full": "/assets/opt/lsm-sequence-1772.dd64e36b.webp"
+  },
+  "/assets/sora-architecture.png": {
+    "width": 1495,
+    "height": 915,
+    "avif": "/assets/opt/sora-architecture-760.6c8e5161.avif 760w, /assets/opt/sora-architecture-1140.6c8e5161.avif 1140w, /assets/opt/sora-architecture-1495.6c8e5161.avif 1495w",
+    "webp": "/assets/opt/sora-architecture-760.6c8e5161.webp 760w, /assets/opt/sora-architecture-1140.6c8e5161.webp 1140w, /assets/opt/sora-architecture-1495.6c8e5161.webp 1495w",
+    "fallback": "/assets/opt/sora-architecture-1140.6c8e5161.webp",
+    "full": "/assets/opt/sora-architecture-1495.6c8e5161.webp"
+  }
+}

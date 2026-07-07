@@ -6,6 +6,7 @@ import { MDXContent } from "@/components/mdx/mdx-content";
 import { NotesFooter } from "@/components/notes/notes-footer";
 import { TechToken } from "@/components/ui/chip";
 import { formatNoteDate, getNote, notes } from "@/lib/notes";
+import { siteConfig } from "@/lib/site-config";
 
 type PageParams = { params: Promise<{ slug: string }> };
 
@@ -23,6 +24,31 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   return {
     title: note.title,
     description: note.summary,
+    alternates: { canonical: note.url },
+    openGraph: {
+      type: "article",
+      url: `${siteConfig.url}${note.url}`,
+      siteName: siteConfig.shortName,
+      title: note.title,
+      description: note.summary,
+      publishedTime: note.date,
+      authors: [siteConfig.name],
+      tags: note.tags,
+      images: [
+        {
+          url: "/opengraph-image.png",
+          width: 1200,
+          height: 630,
+          alt: `${siteConfig.name} — ${siteConfig.role}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: note.title,
+      description: note.summary,
+      images: ["/opengraph-image.png"],
+    },
   };
 }
 
@@ -39,6 +65,7 @@ export default async function NotePage({ params }: PageParams) {
           <div className="relative mx-auto max-w-[760px] px-[clamp(18px,5vw,48px)] pb-[clamp(32px,5vw,48px)] pt-[clamp(48px,7vw,84px)]">
             <Link
               href="/notes"
+              prefetch={false}
               className="inline-flex items-center gap-2 font-mono text-[12px] font-medium uppercase tracking-[0.12em] text-text-3 transition-colors hover:text-text"
             >
               <span aria-hidden="true">←</span>

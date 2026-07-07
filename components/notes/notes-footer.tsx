@@ -13,6 +13,7 @@ export function NotesFooter({
     <div className="mt-[clamp(48px,7vw,72px)] flex flex-wrap items-center justify-between gap-4 border-t border-divider pb-10 pt-[26px]">
       <Link
         href={backHref}
+        prefetch={false}
         className="inline-flex items-center gap-2 rounded-[10px] border border-border-strong px-4 py-[10px] text-[13.5px] font-medium text-text transition-colors hover:bg-surface-2"
       >
         <span aria-hidden="true">←</span>

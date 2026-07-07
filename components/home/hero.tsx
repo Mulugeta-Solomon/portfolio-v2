@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { FadeInItem, FadeInStagger } from "@/components/motion/fade-in";
 import { GlassSheen } from "@/components/ui/glass-sheen";
+import { Picture } from "@/components/ui/picture";
 import { Button } from "@/components/ui/button";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/icons";
 import { AuroraBackdrop } from "./aurora-backdrop";
@@ -71,11 +71,9 @@ export function Hero() {
             style={{ background: "radial-gradient(58% 58% at 50% 42%, var(--aurora-1), transparent 70%)" }}
           />
           <GlassSheen className="relative overflow-hidden rounded-[18px] border border-[color:var(--frame-border)] shadow-[var(--frame-shadow)]">
-            <Image
+            <Picture
               src="/assets/portrait.jpg"
               alt={siteConfig.name}
-              width={1200}
-              height={1500}
               priority
               sizes="(max-width: 768px) 90vw, 400px"
               className="block h-auto w-full"

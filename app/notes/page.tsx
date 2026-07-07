@@ -4,11 +4,33 @@ import { NotesHeader } from "@/components/notes/notes-header";
 import { NoteCard } from "@/components/notes/note-card";
 import { NotesFooter } from "@/components/notes/notes-footer";
 import { notes } from "@/lib/notes";
+import { siteConfig } from "@/lib/site-config";
+
+const notesDescription =
+  "Field notes on ML infrastructure, geospatial systems, and shipping software for hard places — by Mulugeta Solomon Abate, full-stack engineer in Tokyo.";
+
+// Shared social card (metadataBase resolves the relative URL to absolute).
+const ogImage = "/opengraph-image.png";
+const ogImageAlt = `${siteConfig.name} — ${siteConfig.role}`;
 
 export const metadata: Metadata = {
   title: "Notes",
-  description:
-    "Field notes on ML infrastructure, geospatial systems, and shipping software for hard places — by Mulugeta Solomon Abate, full-stack engineer in Tokyo.",
+  description: notesDescription,
+  alternates: { canonical: "/notes" },
+  openGraph: {
+    type: "website",
+    url: `${siteConfig.url}/notes`,
+    siteName: siteConfig.shortName,
+    title: `Notes — ${siteConfig.shortName}`,
+    description: notesDescription,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: ogImageAlt }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Notes — ${siteConfig.shortName}`,
+    description: notesDescription,
+    images: [ogImage],
+  },
 };
 
 export default function NotesPage() {

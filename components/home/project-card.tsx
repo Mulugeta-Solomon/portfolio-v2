@@ -1,7 +1,8 @@
-import Image from "next/image";
 import { clsx } from "clsx";
 import { Chip, TechToken } from "@/components/ui/chip";
 import { LockIcon } from "@/components/ui/icons";
+import { Picture } from "@/components/ui/picture";
+import { getImage } from "@/lib/images";
 import { ArchitecturePanel } from "./architecture-panel";
 import type { Project } from "@/lib/types";
 
@@ -9,6 +10,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const media = project.images[0];
   const isDiagramMedia = media.kind === "diagram";
   const mediaLast = project.mediaOrder === "media-last";
+  const mediaFull = getImage(media.src)?.full ?? media.src;
 
   const mediaBlock = (
     <div
@@ -21,17 +23,15 @@ export function ProjectCard({ project }: { project: Project }) {
       {isDiagramMedia ? (
         <>
           <a
-            href={media.src}
+            href={mediaFull}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${project.title} — open the full-size diagram (opens in a new tab)`}
             className="block w-full rounded-[14px] border border-[color:var(--frame-border)] bg-[var(--frame-bg)] p-[clamp(10px,1.4vw,16px)] shadow-[var(--frame-shadow)] transition-[filter] duration-200 hover:brightness-[1.03]"
           >
-            <Image
+            <Picture
               src={media.src}
               alt={media.alt}
-              width={media.width}
-              height={media.height}
               sizes="(max-width: 768px) 90vw, 520px"
               className="block h-auto w-full"
             />
@@ -44,11 +44,9 @@ export function ProjectCard({ project }: { project: Project }) {
         </>
       ) : (
         <div className="w-full overflow-hidden rounded-[11px] border border-[color:var(--frame-border)] shadow-[var(--frame-shadow)]">
-          <Image
+          <Picture
             src={media.src}
             alt={media.alt}
-            width={media.width}
-            height={media.height}
             sizes="(max-width: 768px) 90vw, 520px"
             className="block h-auto w-full"
           />
@@ -105,7 +103,7 @@ export function ProjectCard({ project }: { project: Project }) {
   );
 
   return (
-    <article className="overflow-hidden rounded-[18px] border border-border bg-surface transition-[border-color,box-shadow,background-color] duration-[250ms] hover:border-border-strong hover:shadow-[var(--frame-shadow)]">
+    <article className="overflow-hidden rounded-[18px] border border-border bg-surface transition-[border-color,box-shadow,background-color,transform] duration-[250ms] hover:border-border-strong hover:shadow-[var(--frame-shadow)] motion-safe:hover:-translate-y-0.5">
       <div className="grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))]">
         {mediaLast ? (
           <>
