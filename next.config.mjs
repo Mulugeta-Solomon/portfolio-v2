@@ -1,3 +1,20 @@
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
+// Content-hash the resume PDF so its download URL cache-busts automatically on every
+// change: the link becomes …-Resume.pdf?v=<hash>, a fresh CDN cache key, so an updated
+// resume goes live the moment the deploy lands — no stale edge cache, no manual bump.
+const resumeVersion = (() => {
+  try {
+    const pdf = readFileSync(
+      new URL("./public/assets/Mulugeta-Solomon-Abate-Resume.pdf", import.meta.url),
+    );
+    return createHash("sha256").update(pdf).digest("hex").slice(0, 10);
+  } catch {
+    return "dev";
+  }
+})();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Static export → Cloudflare Pages. No server runtime.
@@ -10,6 +27,8 @@ const nextConfig = {
   // Dev-only: allow the LAN IP so fonts/HMR aren't blocked as cross-origin when
   // viewing from another device. Ignored by `next build` (static export).
   allowedDevOrigins: ["192.168.0.8"],
+  // Inlined into the bundle at build; consumed by siteConfig.resumePath.
+  env: { RESUME_V: resumeVersion },
 };
 
 // Velite content layer (Notes/MDX). Turbopack ignores webpack plugins, so we run
