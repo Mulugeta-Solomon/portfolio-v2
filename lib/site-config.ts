@@ -11,7 +11,9 @@ export const siteConfig: SiteConfig = {
   email: "mulugetas.abate@gmail.com",
   github: "https://github.com/Mulugeta-Solomon",
   linkedin: "https://www.linkedin.com/in/mulugeta-solomon/",
-  resumePath: "/assets/Mulugeta-Solomon-Abate-Resume.pdf",
+  // Content-hashed at build (next.config.mjs env.RESUME_V) so the URL changes whenever the
+  // PDF changes → the CDN serves the new file immediately, with no stale cache and no purge.
+  resumePath: `/assets/Mulugeta-Solomon-Abate-Resume.pdf?v=${process.env.RESUME_V ?? "1"}`,
   location: "Tokyo, Japan",
   current: "Software Engineer, ML & AI — Sora Technology, Tokyo",
   availability: "Based in Tokyo, Japan · authorized to work in Japan · open to remote",

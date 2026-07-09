@@ -26,9 +26,11 @@
 /opengraph-image.png
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
-# Resume PDF is mutable at a stable URL — revalidate quickly so an update is seen.
+# Resume PDF is served at a content-hashed URL (…?v=<hash>, set in next.config.mjs), so
+# each version is a unique URL — cache it forever; a new resume gets a new URL that the
+# (uncached) HTML points at immediately, so updates go live with no stale edge cache.
 /assets/Mulugeta-Solomon-Abate-Resume.pdf
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  Cache-Control: public, max-age=31536000, immutable
 
 # Other stable-name assets — a day fresh, then revalidate in the background.
 /assets/*
