@@ -7,7 +7,7 @@ import { notes } from "@/lib/notes";
 import { siteConfig } from "@/lib/site-config";
 
 const notesDescription =
-  "Field notes on ML infrastructure, geospatial systems, and shipping software for hard places — by Mulugeta Solomon Abate, full-stack engineer in Tokyo.";
+  "Field notes on ML infrastructure, geospatial systems, and shipping software for hard places — by Mulugeta Solomon Abate, software engineer in Tokyo.";
 
 // Shared social card (metadataBase resolves the relative URL to absolute).
 const ogImage = "/opengraph-image.png";

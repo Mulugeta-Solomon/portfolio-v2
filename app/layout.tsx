@@ -21,7 +21,8 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   keywords: [
     "Mulugeta Solomon Abate",
-    "full-stack engineer",
+    "software engineer",
+    "machine learning engineer",
     "backend engineer",
     "system design",
     "ML infrastructure",

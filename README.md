@@ -1,6 +1,6 @@
 # Portfolio V2 — Mulugeta Solomon Abate
 
-Personal portfolio and engineering notes for **Mulugeta Solomon Abate** — a full-stack engineer in Tokyo focused on **backend & system design**. Dark-first with a light theme, built around an Apple-style **Liquid Glass** design language.
+Personal portfolio and engineering notes for **Mulugeta Solomon Abate** — a software engineer in Tokyo focused on **backend, system design & ML**. Dark-first with a light theme, built around an Apple-style **Liquid Glass** design language.
 
 **Live:** https://mulugetaabate.com _(coming soon)_
 
