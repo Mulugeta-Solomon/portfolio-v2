@@ -12,12 +12,18 @@ export const projects: Project[] = [
     techTokens: ["FastAPI", "Celery", "Next.js", "MapLibre GL", "PostgreSQL", "AWS"],
     images: [
       {
+        src: "/assets/floodsight-landing.png",
+        alt: "Flood-Sight landing page — 'See the flood before it arrives': rainfall-driven inundation shown on a map with a flood-depth legend and peak-inundation figure, built by SORA Technology for national disaster-management agencies",
+        kind: "screenshot",
+      },
+      {
         src: "/assets/floodsight-map-crop.png",
         alt: "Flood-Sight flood simulation map",
-        kind: "screenshot",      },
+        kind: "screenshot",
+      },
     ],
     mediaOrder: "media-first",
-    badge: { label: "Internal platform" },
+    liveUrl: { label: "flood-sight.com ↗", href: "https://flood-sight.com" },
     architecture: {
       eyebrow: "System architecture",
       note: "One engineer · every layer",

@@ -15,6 +15,14 @@
     "fallback": "/assets/opt/floodsight-map-crop-1040.03c9e686.webp",
     "full": "/assets/opt/floodsight-map-crop-1562.03c9e686.webp"
   },
+  "/assets/floodsight-landing.png": {
+    "width": 1768,
+    "height": 984,
+    "avif": "/assets/opt/floodsight-landing-520.f38e5aaf.avif 520w, /assets/opt/floodsight-landing-780.f38e5aaf.avif 780w, /assets/opt/floodsight-landing-1040.f38e5aaf.avif 1040w, /assets/opt/floodsight-landing-1768.f38e5aaf.avif 1768w",
+    "webp": "/assets/opt/floodsight-landing-520.f38e5aaf.webp 520w, /assets/opt/floodsight-landing-780.f38e5aaf.webp 780w, /assets/opt/floodsight-landing-1040.f38e5aaf.webp 1040w, /assets/opt/floodsight-landing-1768.f38e5aaf.webp 1768w",
+    "fallback": "/assets/opt/floodsight-landing-1040.f38e5aaf.webp",
+    "full": "/assets/opt/floodsight-landing-1768.f38e5aaf.webp"
+  },
   "/assets/karamu-dash.png": {
     "width": 1712,
     "height": 1089,

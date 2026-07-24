@@ -28,6 +28,7 @@ const WIDTHS = {
 const IMAGES = [
   { file: "portrait.jpg", src: "/assets/portrait.jpg", kind: "photo" },
   { file: "floodsight-map-crop.png", src: "/assets/floodsight-map-crop.png", kind: "shot" },
+  { file: "floodsight-landing.png", src: "/assets/floodsight-landing.png", kind: "shot" },
   { file: "karamu-dash.png", src: "/assets/karamu-dash.png", kind: "shot" },
   { file: "floodsight-architecture.png", src: "/assets/floodsight-architecture.png", kind: "diagram" },
   { file: "lsm-sequence.png", src: "/assets/lsm-sequence.png", kind: "diagram" },
