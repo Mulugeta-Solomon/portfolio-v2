@@ -12,7 +12,7 @@ export function ThemeToggle() {
       aria-label="Toggle color theme"
       title="Toggle theme"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="inline-flex size-[38px] flex-none items-center justify-center rounded-[10px] border border-border bg-surface text-text-2 transition-colors hover:border-border-strong hover:text-text"
+      className="glass glass-bar inline-flex size-[40px] flex-none items-center justify-center text-text-2 transition-[color,filter] duration-200 hover:text-text hover:brightness-[1.06]"
     >
       {/* Both render; CSS shows one based on [data-theme] — hydration-safe, no mount flag. */}
       <SunIcon className="theme-icon-sun" />

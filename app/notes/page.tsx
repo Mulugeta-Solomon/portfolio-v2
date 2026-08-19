@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/reveal";
+import { GlideList, GlideItem } from "@/components/motion/glide";
 import { NotesHeader } from "@/components/notes/notes-header";
 import { NoteCard } from "@/components/notes/note-card";
 import { NotesFooter } from "@/components/notes/notes-footer";
@@ -38,13 +39,15 @@ export default function NotesPage() {
     <main id="main">
       <NotesHeader />
       <section className="mx-auto max-w-[860px] px-[clamp(18px,5vw,48px)] pt-[clamp(40px,6vw,64px)]">
-        <div className="flex flex-col gap-[18px]">
+        <GlideList spread={9} radius={23} className="flex flex-col gap-[18px]">
           {notes.map((note, i) => (
-            <Reveal key={note.slug} delay={i * 0.04}>
-              <NoteCard note={note} />
-            </Reveal>
+            <GlideItem key={note.slug} id={note.slug}>
+              <Reveal delay={i * 0.04}>
+                <NoteCard note={note} />
+              </Reveal>
+            </GlideItem>
           ))}
-        </div>
+        </GlideList>
         <NotesFooter />
       </section>
     </main>

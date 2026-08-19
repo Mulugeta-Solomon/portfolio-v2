@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "optimize:images": "node scripts/optimize-images.mjs"
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "generate:logos": "node scripts/generate-tech-logos.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -31,6 +32,7 @@
     "rehype-pretty-code": "^0.14.3",
     "sharp": "^0.35.3",
     "shiki": "^4.3.1",
+    "simple-icons": "^16.28.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "velite": "^0.4.0"

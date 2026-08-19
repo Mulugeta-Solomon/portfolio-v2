@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/reveal";
+import { GlideList, GlideItem } from "@/components/motion/glide";
 import { SectionHeading } from "./section-heading";
 import { ProjectCard } from "./project-card";
 import { projects } from "@/lib/projects";
@@ -15,13 +16,16 @@ export function Work() {
             lead="Production systems in climate, public health, and hospitality — the problem, my role, the stack, and what shipped."
           />
         </Reveal>
-        <div className="mt-10 flex flex-col gap-[26px]">
+        {/* spread pushes the plate past the card edge, so it reads as a halo behind it */}
+        <GlideList spread={10} radius={27} className="mt-10 flex flex-col gap-[26px]">
           {projects.map((project) => (
-            <Reveal key={project.slug}>
-              <ProjectCard project={project} />
-            </Reveal>
+            <GlideItem key={project.slug} id={project.slug}>
+              <Reveal>
+                <ProjectCard project={project} />
+              </Reveal>
+            </GlideItem>
           ))}
-        </div>
+        </GlideList>
       </div>
     </section>
   );

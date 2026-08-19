@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden border-b border-divider">
       <AuroraBackdrop variant="hero" />
-      <div className="relative mx-auto flex max-w-[1180px] flex-wrap items-center gap-[clamp(28px,5vw,60px)] px-[clamp(18px,5vw,48px)] py-[clamp(52px,8vw,88px)] pt-[clamp(60px,10vw,116px)]">
+      <div className="relative mx-auto flex max-w-[1180px] flex-wrap items-center gap-[clamp(28px,5vw,60px)] px-[clamp(18px,5vw,48px)] py-[clamp(52px,8vw,88px)] pt-[calc(var(--nav-h)+clamp(44px,8vw,108px))]">
         <FadeInStagger className="min-w-0 max-w-[660px] flex-[1_1_480px]">
           <FadeInItem>
             <div className="mb-[30px] flex flex-wrap items-center justify-between gap-4">
