@@ -35,6 +35,11 @@
   --grid-line: rgba(255, 255, 255, 0.028);
   --dot: #4ade80;
 
+  /* Height the fixed nav occupies: the 40px pills plus the header's own padding.
+     The nav is out of flow so every section's backdrop runs full-bleed behind it —
+     page-top sections add this to their inner padding instead. */
+  --nav-h: calc(40px + 2 * clamp(10px, 1.5vw, 16px));
+
   /* Liquid Glass — DARK */
   --glass-blur: 16px;
   --glass-saturate: 180%;
@@ -277,6 +282,18 @@
 .glass-nav {
   border-radius: 0;
   box-shadow: var(--glass-inner-hi), var(--glass-drop);
+}
+/* floating nav furniture — the name pill, the link pill, the theme orb, Résumé */
+.glass-bar {
+  --glass-blur: 18px;
+  border-radius: 999px;
+  box-shadow: var(--glass-inner-hi), var(--glass-inner-lo), var(--glass-drop);
+}
+/* the mobile menu, floating clear of the viewport edges */
+.glass-panel {
+  --glass-blur: 20px;
+  border-radius: 20px;
+  box-shadow: var(--glass-inner-hi), var(--glass-inner-lo), var(--glass-drop-lg);
 }
 .glass-card {
   border-radius: 18px;

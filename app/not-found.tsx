@@ -18,7 +18,7 @@ export default function NotFound() {
       className="relative flex min-h-[72vh] items-center overflow-hidden border-b border-divider"
     >
       <AuroraBackdrop variant="hero" />
-      <div className="relative mx-auto w-full max-w-[1180px] px-[clamp(18px,5vw,48px)] py-[clamp(60px,12vw,120px)]">
+      <div className="relative mx-auto w-full max-w-[1180px] px-[clamp(18px,5vw,48px)] py-[clamp(60px,12vw,120px)] pt-[calc(var(--nav-h)+clamp(48px,10vw,104px))]">
         <div className="font-mono text-[12px] font-medium uppercase tracking-[0.18em] text-accent">
           Error 404
         </div>

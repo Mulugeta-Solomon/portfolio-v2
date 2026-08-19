@@ -5,7 +5,7 @@ export function NotesHeader() {
   return (
     <section className="relative overflow-hidden border-b border-divider">
       <AuroraBackdrop variant="notes" />
-      <div className="relative mx-auto max-w-[860px] px-[clamp(18px,5vw,48px)] pb-[clamp(40px,6vw,64px)] pt-[clamp(56px,9vw,104px)]">
+      <div className="relative mx-auto max-w-[860px] px-[clamp(18px,5vw,48px)] pb-[clamp(40px,6vw,64px)] pt-[calc(var(--nav-h)+clamp(40px,7vw,96px))]">
         <div className="mb-5 font-mono text-[12px] font-medium uppercase tracking-[0.18em] text-accent">
           Writing
         </div>

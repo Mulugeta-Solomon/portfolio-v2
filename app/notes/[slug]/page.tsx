@@ -62,7 +62,7 @@ export default async function NotePage({ params }: PageParams) {
       <article>
         <header className="relative overflow-hidden border-b border-divider">
           <AuroraBackdrop variant="notes" />
-          <div className="relative mx-auto max-w-[760px] px-[clamp(18px,5vw,48px)] pb-[clamp(32px,5vw,48px)] pt-[clamp(48px,7vw,84px)]">
+          <div className="relative mx-auto max-w-[760px] px-[clamp(18px,5vw,48px)] pb-[clamp(32px,5vw,48px)] pt-[calc(var(--nav-h)+clamp(32px,5vw,72px))]">
             <Link
               href="/notes"
               prefetch={false}

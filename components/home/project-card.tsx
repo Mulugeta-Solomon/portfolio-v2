@@ -103,7 +103,7 @@ export function ProjectCard({ project }: { project: Project }) {
   );
 
   return (
-    <article className="overflow-hidden rounded-[18px] border border-border bg-surface transition-[border-color,box-shadow,background-color,transform] duration-[250ms] hover:border-border-strong hover:shadow-[var(--frame-shadow)] motion-safe:hover:-translate-y-0.5">
+    <article className="overflow-hidden rounded-[18px] border border-border bg-surface transition-[border-color,background-color] duration-[250ms] hover:border-border-strong">
       <div className="grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))]">
         {mediaLast ? (
           <>

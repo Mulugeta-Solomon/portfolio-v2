@@ -2,10 +2,11 @@ import { clsx } from "clsx";
 import { TechToken } from "@/components/ui/chip";
 import type { JourneyEntry } from "@/lib/types";
 
-export function TimelineEntry({ entry, last }: { entry: JourneyEntry; last?: boolean }) {
+/** Spacing between entries is the parent's `gap`, so the hover plate hugs the entry. */
+export function TimelineEntry({ entry }: { entry: JourneyEntry }) {
   const isNow = entry.variant === "now";
   return (
-    <div className={clsx("relative flex gap-[22px]", !last && "pb-9")}>
+    <div className="relative flex gap-[22px]">
       <div
         aria-hidden
         className={clsx(
