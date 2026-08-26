@@ -102,7 +102,7 @@ export const projects: Project[] = [
         { label: "Data", value: "PostgreSQL · Prisma ORM · migrations" },
         { label: "Real‑time", value: "Socket.io · live floor + hold state" },
         { label: "Integrations", value: "M‑Pesa payments · SMS / WhatsApp" },
-        { label: "Infra", value: "Vercel · Railway · Docker · Cloudflare R2 · CDN · CI/CD · getkaramu.com" },
+        { label: "Infra", value: "Cloudflare Workers · R2 · CDN · Railway · Docker · CI/CD · getkaramu.com" },
       ],
     },
   },

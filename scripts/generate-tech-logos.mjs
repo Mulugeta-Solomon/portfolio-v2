@@ -75,9 +75,9 @@ async function run() {
     const source = packaged ?? (await localIcon(entry.slug));
     if (!packaged) console.log(`  ${entry.slug.padEnd(20)} (local — not in simple-icons)`);
 
-    // No brand hex: the strip renders monochrome in currentColor. Half these marks
-    // are near-black (Next.js, Vercel, Prisma, Railway) and would disappear on the
-    // dark theme, and a strip of twenty brand colours fights the page either way.
+    // No brand hex: the strip renders monochrome in currentColor. Some marks are
+    // near-black (Next.js, Prisma) and would vanish on the dark theme, and twenty
+    // competing brand colours fight the page either way.
     out.push({
       id: entry.slug,
       label: entry.label ?? source.title,
