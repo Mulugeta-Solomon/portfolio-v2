@@ -26,7 +26,7 @@ export function Hero() {
 
           <FadeInItem>
             <h1 className="m-0 max-w-[18ch] text-[clamp(33px,5.6vw,56px)] font-semibold leading-[1.05] tracking-[-0.035em] text-text">
-              I build end‑to‑end systems for problems that matter.
+              I build full‑stack systems for problems that matter.
             </h1>
           </FadeInItem>
 
