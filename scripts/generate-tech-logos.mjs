@@ -18,29 +18,41 @@ import path from "node:path";
 const LOCAL_DIR = "assets-src/logos";
 const OUT_PATH = "lib/generated/tech-logos.json";
 
-// Display order = how the strip reads left-to-right: languages, frontend, backend,
-// data/ML, then infra — the same spine as the Stack section.
+// Display order = how the strip reads left-to-right. Languages first, then the
+// frameworks and runtimes they are written against, then the frontend layer,
+// then ML, data stores, and infrastructure.
 const LOGOS = [
+  // Languages
   { slug: "typescript" },
   { slug: "python" },
   { slug: "go" },
   { slug: "cplusplus", label: "C++" },
-  { slug: "react" },
+
+  // Backend frameworks & runtimes
+  { slug: "fastapi", label: "FastAPI" },
   { slug: "nextdotjs", label: "Next.js" },
+  { slug: "nestjs", label: "NestJS" },
+  { slug: "nodedotjs", label: "Node.js" },
+  { slug: "celery", label: "Celery" },
+
+  // Frontend
+  { slug: "react" },
   { slug: "tailwindcss", label: "Tailwind CSS" },
   { slug: "maplibre", label: "MapLibre GL" },
-  { slug: "nodedotjs", label: "Node.js" },
-  { slug: "nestjs", label: "NestJS" },
-  { slug: "fastapi", label: "FastAPI" },
-  { slug: "celery", label: "Celery" },
+
+  // ML
   { slug: "pytorch", label: "PyTorch" },
   { slug: "tensorflow", label: "TensorFlow" },
   { slug: "opencv", label: "OpenCV" },
+
+  // Data
   { slug: "postgresql", label: "PostgreSQL" },
   { slug: "redis", label: "Redis" },
   { slug: "prisma", label: "Prisma" },
+
+  // Infrastructure
   { slug: "docker", label: "Docker" },
-  // Not in simple-icons since v14 — read from assets-src/logos/.
+  // Not in simple-icons since v14 - read from assets-src/logos/.
   { slug: "amazonwebservices", label: "AWS" },
 ];
 

@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: "Mulugeta Solomon Abate",
   shortName: "Mulugeta Abate",
   role: "Software Engineer · Backend, System Design & ML",
-  tagline: "I build end-to-end systems for problems that matter.",
+  tagline: "I build full-stack systems for problems that matter.",
   description:
     "Software engineer in Tokyo specializing in backend, system design, and machine learning. I build production ML platforms, cloud infrastructure, and end-to-end products — from flood-simulation and malaria-detection AI services to a SaaS product for the East African market.",
   url: "https://mulugetaabate.dev",
