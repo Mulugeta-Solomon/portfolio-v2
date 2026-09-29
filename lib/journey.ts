@@ -37,12 +37,12 @@ export const journey: JourneyEntry[] = [
   },
   {
     period: "Oct 2024 – Present",
-    title: "Software Engineer, ML & AI",
+    title: "Software Engineer",
     inlineBadge: { label: "NOW", variant: "now" },
     org: "Sora Technology · Tokyo, Japan",
     blurb:
-      "Architected the SORA platform backend on AWS, built Flood-Sight end-to-end, and shipped waterbody AI detection at >85% precision / recall.",
-    badges: ["AWS", "Flood-Sight", "LSM"],
+      "Architected the SORA platform backend on AWS, built Flood-Sight end-to-end and made its flood solver 12.5× faster, and shipped waterbody AI detection at >85% precision / recall. Now lead developer on a disease early-warning platform for Ghana.",
+    badges: ["AWS", "Flood-Sight", "LSM", "Early warning"],
     variant: "now",
   },
 ];

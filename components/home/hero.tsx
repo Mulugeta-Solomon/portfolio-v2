@@ -34,14 +34,14 @@ export function Hero() {
             <p className="mt-[26px] max-w-[62ch] text-[clamp(16px,2vw,18.5px)] leading-[1.6] text-text-2">
               End to end — the APIs, data models, and services (FastAPI, NestJS), the ML inside, and
               the cloud it runs on, with a React and Next.js front end on top. Flood‑simulation and
-              disease‑risk platforms deployed across Africa, plus a SaaS product for the East African
-              market.
+              disease‑risk platforms deployed across Africa, plus a SaaS side project for the East
+              African market.
             </p>
           </FadeInItem>
 
           <FadeInItem>
             <div className="mb-[30px] mt-8 font-mono text-[11.5px] font-medium uppercase tracking-[0.14em] text-text-3">
-              Currently · Software Engineer, ML &amp; AI — Sora Technology, Tokyo
+              Currently · {siteConfig.current}
             </div>
           </FadeInItem>
 

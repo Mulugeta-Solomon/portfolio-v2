@@ -75,3 +75,9 @@ Flood-Sight is really two systems pretending to be one: a **scientific simulator
 - **GPU-accelerated map rendering** keeps the front end fluid over data that is genuinely heavy.
 
 The lesson I carried out of it: when the core computation is honestly slow and you cannot cheat physics, stop trying to make it fast and start making the *waiting* transparent. A correct answer you can watch arrive beats a fast answer you cannot trust — especially when the answer is where a flood will reach.
+
+## Update, September 2026
+
+That last paragraph needs a footnote. When I later profiled the solver properly, very little of its time was the physics: it was NumPy and Python glue around the compiled kernels, plus BLAS threads fighting over the same cores. Fixing those cut the solver from 0.663 s to 0.053 s per step on the same 1M-cell region run, measured on staging with byte-identical output. Over 11 minutes of solver time became under one.
+
+The architecture above did not change, because under a minute is still nowhere near a web request. The lesson did: measure before you decide a computation is honestly slow.

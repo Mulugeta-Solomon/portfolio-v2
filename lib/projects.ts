@@ -7,9 +7,9 @@ export const projects: Project[] = [
     title: "Flood-Sight",
     blurb:
       "A physics-based flood-simulation and early-warning platform, deployed for disaster preparedness in Mozambique through a JICA-linked program.",
-    role: "ML & AWS infrastructure — backend architecture in private subnets, simulation-engine integration, and geospatial data pipelines.",
-    resultChips: ["Deployed · Mozambique", "146+ automated tests", "i18n · 4 languages"],
-    techTokens: ["FastAPI", "Celery", "Next.js", "MapLibre GL", "PostgreSQL", "AWS"],
+    role: "Built it end to end — the FastAPI + Celery backend, simulation-engine integration, geospatial data pipelines, and the Next.js + MapLibre front end — then made the solver 12.5× faster.",
+    resultChips: ["Deployed · Mozambique", "Solver 12.5× faster", "146+ automated tests", "i18n · 4 languages"],
+    techTokens: ["FastAPI", "Celery", "Next.js", "MapLibre GL", "PostgreSQL", "Railway"],
     images: [
       {
         src: "/assets/floodsight-landing.png",
@@ -29,10 +29,10 @@ export const projects: Project[] = [
       note: "One engineer · every layer",
       heading: "Rainfall and terrain in, a flood‑depth map out — end to end.",
       paragraph:
-        "A Next.js front end talks to a FastAPI control plane that enqueues long‑running simulations onto Celery workers through Redis, streams live progress back over WebSocket, and tracks every job in Postgres. The flood engine — Landlab, SCS‑CN runoff, shallow‑water flow — writes GeoTIFF and PNG outputs to S3. JWT auth, transactional email, and Sentry observability round it out, deployed on Railway.",
+        "A Next.js front end talks to a FastAPI control plane that enqueues long‑running simulations onto Celery workers through Redis, streams live progress back over WebSocket, and tracks every job in Postgres. The flood engine — Landlab, SCS‑CN runoff, shallow‑water flow — writes GeoTIFF and PNG outputs to S3‑compatible storage (Cloudflare R2). JWT auth, transactional email, and Sentry observability round it out, deployed on Railway. A later profiling pass made the solver 12.5× faster per step, measured on staging, with byte‑identical output.",
       diagram: {
         src: "/assets/floodsight-architecture.png",
-        alt: "Flood-Sight system architecture: Next.js frontend, FastAPI backend, Celery workers on Redis, PostgreSQL, the flood-simulation engine, S3 storage, transactional email, and Sentry observability, deployed on Railway",
+        alt: "Flood-Sight system architecture: Next.js frontend, FastAPI backend, Celery workers on Redis, PostgreSQL, the flood-simulation engine, S3-compatible storage (Cloudflare R2), transactional email, and Sentry observability, deployed on Railway",
         caption: "Click to view full size ↗",      },
       layers: [
         { label: "Frontend", value: "Next.js 16 · React 19 · TypeScript · MapLibre GL · i18n (EN/FR/PT/JA)" },
@@ -75,11 +75,11 @@ export const projects: Project[] = [
   },
   {
     slug: "karamu",
-    category: "Product · SaaS · Solo build",
+    category: "Side project · SaaS · Solo build",
     title: "Karamu",
     blurb:
       "A restaurant reservation and management platform for the East African market — designed, built, and shipped end-to-end: product, brand, and engineering.",
-    role: "Founder & sole engineer — product design, brand identity, full-stack build, and infrastructure.",
+    role: "Side project, built solo outside work — product design, brand identity, full-stack build, and infrastructure.",
     resultChips: ["Real-time floor", "M-Pesa payments", "SMS / WhatsApp"],
     techTokens: ["React", "Next.js", "TypeScript", "Node", "NestJS", "Prisma", "Socket.io"],
     images: [

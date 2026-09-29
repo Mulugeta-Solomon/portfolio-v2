@@ -22,11 +22,10 @@ const OUT_PATH = "lib/generated/tech-logos.json";
 // frameworks and runtimes they are written against, then the frontend layer,
 // then ML, data stores, and infrastructure.
 const LOGOS = [
-  // Languages
+  // Languages shipped in production. Go, C++ and C are working knowledge only, so they
+  // stay in the Stack row's qualified line and out of this strip.
   { slug: "typescript" },
   { slug: "python" },
-  { slug: "go" },
-  { slug: "cplusplus", label: "C++" },
 
   // Backend frameworks & runtimes
   { slug: "fastapi", label: "FastAPI" },
