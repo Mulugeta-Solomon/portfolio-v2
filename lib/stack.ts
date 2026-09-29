@@ -1,7 +1,7 @@
 import type { StackRow } from "@/lib/types";
 
 export const stack: StackRow[] = [
-  { label: "Languages", value: "TypeScript · Python · Go · SQL · C++ · C" },
+  { label: "Languages", value: "Python · TypeScript · SQL — working knowledge of Go, C++, C" },
   { label: "Frontend", value: "React · Next.js · Vite · Tailwind · MapLibre GL" },
   { label: "Backend", value: "Node / NestJS · FastAPI · Celery · REST · WebSockets · JWT auth" },
   {
